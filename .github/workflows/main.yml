@@ -1,0 +1,35 @@
+name: Build Java JAR (Ant Legacy)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      jarName:
+        description: 'Nombre del jar'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Ant
+        run: sudo apt-get install -y ant
+
+      - name: Build with Ant
+        run: ant clean jar
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.inputs.jarName }}.jar
+          path: dist/*.jar
