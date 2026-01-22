@@ -1,2 +1,0 @@
-Main.ClasePrincipal
-Main.Hilo
